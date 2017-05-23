@@ -2,7 +2,7 @@ import { getRandomAtgism } from '../services/dataservice';
 import { ATGIsmLimitedResponse } from '../models/models';
 import React from 'react';
 import { Card, CardProps } from './card/Card';
-const { Spinner } = require('react-lightning-design-system');
+const { Spinner, PageHeader, PageHeaderHeading, Icon } = require('react-lightning-design-system');
 
 
 export interface AtgismState {
@@ -68,7 +68,7 @@ export class Atgism extends React.Component<{}, AtgismState> {
             <div>
               <Spinner size="medium" type="brand" />
             </div>}
-          {this.state.atgism && 
+          {this.state.atgism &&
             <Card
               header="Random ATGism"
               showButton={true}
