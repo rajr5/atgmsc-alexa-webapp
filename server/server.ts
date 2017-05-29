@@ -30,10 +30,10 @@ app.use(passport.initialize());
 
 if(app.get('env') === 'production') {
   setEnv('production');
-  // app.use(express.static(path.join(__dirname, '/../client'))); // TODO - serve this
+  app.use(express.static(path.join(__dirname, '..'))); // TODO - serve this
   // Catch all routes and deliver index page
   app.use((req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, '..', '..', 'index.html')); // TODO - serve this in prod
+    res.sendFile(path.join(__dirname, '..', 'index.html')); // TODO - serve this in prod
   });
 }
 

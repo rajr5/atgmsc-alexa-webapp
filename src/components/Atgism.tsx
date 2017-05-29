@@ -5,7 +5,8 @@ import { AlexaInstructionsCard } from './AlexaInstructionsCard';
 import { Auth } from '../models/models';
 
 type AtgismProps = {
-  auth?: Auth
+  auth?: Auth;
+  createAlert: (message: string, actionText?: string, autoHideDuration?: number) => void;
 }
 
 export const Atgism = (props: AtgismProps) => {
@@ -19,10 +20,10 @@ export const Atgism = (props: AtgismProps) => {
         <AlexaInstructionsCard></AlexaInstructionsCard>
       </div>
       <div style={cardStyle}>
-        <RandomAtgism auth={props.auth}/>
+        <RandomAtgism auth={props.auth} createAlert={props.createAlert}/>
       </div>
       <div style={cardStyle}>
-        <CreateATGism auth={props.auth}/>
+        <CreateATGism auth={props.auth} createAlert={props.createAlert}/>
       </div>
     </div>
   );

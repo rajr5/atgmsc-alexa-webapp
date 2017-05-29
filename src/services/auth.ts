@@ -29,7 +29,7 @@ export function checkQueryParams(): boolean {
       return true;
     }
   }
-  return false
+  return false;
 }
 
 export function getAuth(): Auth {
@@ -81,7 +81,7 @@ export function getLSByKey(key: string) {
 }
 
 export function getLS(): {auth: Auth} {
-  const ls: {auth: Auth} = JSON.parse(localStorage.getItem(NS));
+  const ls: {auth: Auth} = JSON.parse(localStorage.getItem(NS)) || {};
   let auth: Auth = ls.auth;
   if(auth) {
     if(typeof(auth.expires) === 'string') {

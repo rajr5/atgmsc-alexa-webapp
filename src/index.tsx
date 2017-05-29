@@ -73,7 +73,7 @@ export class App extends React.Component<{}, AppState> {
     this.setState({activeItem: newItem});
   }
 
-  createAlert(message: string, actionText: string = "OK") {
+  createAlert(message: string, actionText: string = "OK", autoHideDuration: number = 4000) {
     this.setState({alert: {open: true, message: message, autoHideDuration: 4000, actionText}});
   }
 
@@ -86,7 +86,9 @@ export class App extends React.Component<{}, AppState> {
     return (
       <MuiThemeProvider>
         <div>
-          {this.state.alert.open && <Snackbar open={this.state.alert.open} message={this.state.alert.message} action="Ok" onActionTouchTap={this.onAlertClose}></Snackbar>}
+          {this.state.alert && this.state.alert.open &&
+            <Snackbar open={this.state.alert.open} message={this.state.alert.message} action={this.state.alert.actionText} onActionTouchTap={this.onAlertClose}></Snackbar>
+          }
           <div style={{width: '256px'}}>
             <Navigation
               header='Navigation'
@@ -101,7 +103,7 @@ export class App extends React.Component<{}, AppState> {
             <Paper style={this.paperStyle} zDepth={2} >
               {
                 this.state.activeItem === NAV_ITEMS.ATGISM ?
-                  <Atgism auth={this.state.auth}></Atgism>  :
+                  <Atgism auth={this.state.auth} createAlert={this.createAlert}></Atgism>  :
                   <div>Coming Soon</div>
               }
             </Paper>

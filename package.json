@@ -4,9 +4,8 @@
   "description": "",
   "main": "dist/server/bin/www.js",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "tsc -p ./server && webpack",
-    "dev": "tsc -p ./server && concurrently --kill-others \"tsc -w -p ./server\" \"nodemon --inspect dist/server/bin/www.js\" \"webpack-dev-server --hot\" ",
+    "start": "tsc -p ./server && concurrently --kill-others \"tsc -w -p ./server\" \"nodemon --inspect dist/server/bin/www.js\" \"webpack-dev-server --hot\" ",
+    "build": "rm -r -f dist && tsc -p ./server && webpack --env=prod -p --progress --profile --colors && cp index.prod.html dist/index.html",
     "postinstall": "npm run build"
   },
   "repository": {

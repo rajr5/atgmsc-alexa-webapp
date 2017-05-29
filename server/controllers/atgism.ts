@@ -20,7 +20,12 @@ export async function getAll(req: Request, res: Response) {
 
 export async function create(req: Request, res: Response) {
   try {
+    const reqInput = ['person', 'message', 'submittedBy'];
     const input: ATGIsmInputSubmission = {person: req.body.person, message: req.body.message, submittedBy: req.body.submittedBy, approved: false}
+    
+    if(reqInput.some(i => _.isUndefined(input[i]) || _.isNull(input[i]))) {
+      return error(res, {message: 'All required input properties were not provided'});
+    }
     await addATGIsm(input);
     sendJson(res, {}, 201);
   } catch (ex) {

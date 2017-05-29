@@ -53,3 +53,9 @@ export interface RequestWithAuth {
   refresh_token: string,
   expires: String
 }
+
+export interface Alert {
+  message: string;
+  actionText: string;
+  
+}

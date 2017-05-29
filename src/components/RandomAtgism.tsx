@@ -18,7 +18,8 @@ export interface AtgismState {
 }
 
 type AtgismProps = {
-  auth?: Auth
+  auth?: Auth,
+  createAlert: (message: string, actionText?: string, autoHideDuration?: number) => void
 }
 
 // <props, state>
@@ -53,12 +54,15 @@ export class RandomAtgism extends React.Component<AtgismProps, AtgismState> {
     .then(atgism => {
       console.log('atgism', atgism);
       this.setState({atgism, isError: false, loading: false});
-      this.setActivePromo(atgism);
       this.setLikesDislikes(atgism);
+      if(this.props.auth) {
+        this.setActivePromo(atgism);
+      }
     })
     .catch(err => {
       console.log(err);
       this.setState({error: 'Error obtaining random atgism :(', isError: true, loading: false});
+      this.props.createAlert('Error obtaining atgism :(');
     });
   }
 
@@ -88,7 +92,10 @@ export class RandomAtgism extends React.Component<AtgismProps, AtgismState> {
     }
   }
 
-  findActivePromo(promotions: ATGIsmPromote[]) {
+  findActivePromo(promotions: ATGIsmPromote[]): ATGIsmPromote {
+    if(!this.props.auth) {
+      return;
+    }
     return promotions.find(p => p.name === this.props.auth.mail);
   }
 
@@ -116,12 +123,14 @@ export class RandomAtgism extends React.Component<AtgismProps, AtgismState> {
         this.setState({atgism, isError: false, loading: false});
         this.setActivePromo(atgism);
         this.setLikesDislikes(atgism);
+        this.props.createAlert('Voted Successfully!');
       } else {
         console.log('Returned ATGism did not include promotions', atgism);
       }
     })
     .catch(err => {
       console.log('Error promoting atgism', err);
+      this.props.createAlert('Uh Oh, There was an error voting :(');
     })
   }
 

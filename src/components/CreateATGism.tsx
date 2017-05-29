@@ -15,7 +15,8 @@ export interface CreateAtgismState {
 }
 
 type AtgismProps = {
-  auth?: Auth
+  auth?: Auth,
+  createAlert: (message: string, actionText?: string, autoHideDuration?: number) => void
 }
 
 // <props, state>
@@ -50,11 +51,13 @@ export class CreateATGism extends React.Component<AtgismProps, CreateAtgismState
     createAtgism(this.state.atgism)
     .then(atgism => {
       console.log('atgism', atgism);
-      this.setState({isError: false, loading: false, atgism: { person: '', message: '', submittedBy: '' }});
+      this.setState({isError: false, loading: false, atgism: { person: '', message: '', submittedBy: this.props.auth ? this.props.auth.fullName : '' }});
+      this.props.createAlert('New ATGism submitted successfully!');
     })
     .catch(err => {
       console.log(err);
-      this.setState({error: 'Error obtaining random atgism :(', isError: true, loading: false});
+      this.setState({error: 'Error creating atgism :(', isError: true, loading: false});
+      this.props.createAlert('Error creating atgism :(');
     });
   }
 
@@ -68,7 +71,7 @@ export class CreateATGism extends React.Component<AtgismProps, CreateAtgismState
   }
 
   isFormComplete(): boolean {
-    return !(this.state.atgism.person.length > 0 && this.state.atgism.message.length > 0 && this.props.auth && this.props.auth.fullName.length > 0);
+    return this.state.loading || !(this.state.atgism.person.length > 0 && this.state.atgism.message.length > 0 && this.props.auth && this.props.auth.fullName.length > 0);
   }
 
   public render() {
@@ -87,10 +90,10 @@ export class CreateATGism extends React.Component<AtgismProps, CreateAtgismState
                   </Row> :
                   <span></span>}
                 <Row>
-                  <TextField name="person" floatingLabelText="Who Says this ATGism" hintText="Persons name or nickname" value={this.state.atgism.person} onChange={this.handleFormChange} disabled={!this.props.auth || !this.props.auth.access_token}/>
+                  <TextField name="person" floatingLabelText="Who Says this ATGism" hintText="Persons name or nickname" value={this.state.atgism.person} onChange={this.handleFormChange} disabled={this.state.loading || !this.props.auth || !this.props.auth.access_token}/>
                 </Row>
                 <Row>
-                  <TextField name="message" floatingLabelText="ATGism" hintText="Ensure the ATGism uses proper spelling and punctuation." multiLine={true} value={this.state.atgism.message} onChange={this.handleFormChange} disabled={!this.props.auth || !this.props.auth.access_token}/>
+                  <TextField name="message" floatingLabelText="ATGism" hintText="Ensure the ATGism uses proper spelling and punctuation." multiLine={true} value={this.state.atgism.message} onChange={this.handleFormChange} disabled={this.state.loading || !this.props.auth || !this.props.auth.access_token}/>
                 </Row>
                 <Row>
                   <TextField name="submittedBy" floatingLabelText="Submitted By" value={this.props.auth ? this.props.auth.fullName : ''} disabled={true}/>
@@ -99,7 +102,7 @@ export class CreateATGism extends React.Component<AtgismProps, CreateAtgismState
             </Grid>
           </CardText>
           <CardActions>
-            <RaisedButton label="Submit" disabled={this.isFormComplete()} icon={<AvReplay color={blue500}></AvReplay>}></RaisedButton>
+            <RaisedButton label="Submit" disabled={this.isFormComplete()} icon={<AvReplay color={blue500}></AvReplay>} onClick={this.createATGism}></RaisedButton>
           </CardActions>
         </Card>
       </div>
