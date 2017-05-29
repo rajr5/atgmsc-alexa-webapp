@@ -1,5 +1,4 @@
 import { Auth } from '../models/models';
-import * as _ from 'underscore';
 
 const NS: string = 'ALEXA-ATGISMS';
 
@@ -84,14 +83,15 @@ export function getLSByKey(key: string) {
 export function getLS(): {auth: Auth} {
   const ls: {auth: Auth} = JSON.parse(localStorage.getItem(NS));
   let auth: Auth = ls.auth;
-  if(_.isObject(auth)) {
-    if(_.isString(auth.expires)) {
-      auth.expires = new Date(auth.expires);
+  if(auth) {
+    if(typeof(auth.expires) === 'string') {
+      auth.expires = new Date(auth.expires); 
     }
-    if(_.isString(auth.expires_in)) {
+    if(typeof(auth.expires_in) === 'string') {
       auth.expires_in = Number.parseInt(auth.expires_in);
     }
   }
+
   console.log('local storage:', ls);
   return ls;
 }
