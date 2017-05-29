@@ -1,38 +1,50 @@
 import React from 'react'
+import { Drawer, ListItem, makeSelectable, Subheader } from 'material-ui';
+import { Auth } from '../models/models';
+
 
 export interface NavigationProps {
   header: string,
   items: string[],
   activeItem: string,
   itemChanged: (newItem: string) => void,
+  auth?: Auth
 }
 
 export const Navigation = (props: NavigationProps) => {
+  console.info('Navigation props', props);
 
-  function onClick() {
-    // figure out how to capture click event new active item - 
+  function handleClick(e: any, item: string) {
+    console.log('clicked', e);
+    console.log('item', item);
+    props.itemChanged(item);
   }
 
   console.log('Navigation', props);
 
+  function getSelectedStyle(item: string): {[prop: string]: string} {
+    if(props.activeItem === item) {
+      // selected
+      return { backgroundColor: '#E8E8E8' };
+    } else {
+      // not selected
+      return { backgroundColor: '#FFFFFF' };
+    }
+  }
+
   return (
     <div>
-      <div style={{width: '320px', 'backgroundColor': '#FAFAFB'}}>
-        <nav className="slds-nav-vertical slds-nav-vertical_shade" aria-label="Sub page">
-          <div className="slds-nav-vertical__section">
-            <h2 id="entity-header" className="slds-nav-vertical__title slds-text-title_caps">{props.header}</h2>
-            <ul>
-              {Array.isArray(props.items) && props.items.map((item, i) => {
-                return(<li key={i} className={`slds-nav-vertical__item ${props.activeItem ? 'slds-is-active' : ''}`}>
-                        <a className="slds-nav-vertical__action" aria-describedby="entity-header" aria-current={props.activeItem === item ? 'page' : null}>{item}</a>
-                      </li>);
-              })}
-            </ul>
-          </div>
-        </nav>
-      </div>
+      <Drawer open={true}>
+        <Subheader>Items</Subheader>
+        {props.items.map(item => {
+          return (
+            <ListItem
+              key={item} style={getSelectedStyle(item)}
+              onClick={(e) => handleClick(e, item)}
+              >{item}
+            </ListItem>)
+        })}
+      </Drawer>
     </div>
   )
 }
-
-

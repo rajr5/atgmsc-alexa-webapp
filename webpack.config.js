@@ -27,6 +27,10 @@ module.exports = {
       '/api': {
         target: 'http://localhost:3001/',
         secure: false
+      },
+      '/auth': {
+        target: 'http://localhost:3001/',
+        secure: false
       }
     }
   },
@@ -44,12 +48,8 @@ module.exports = {
     loaders: [
       // .ts(x) files should first pass through the Typescript loader, and then through babel
       { test: /\.tsx?$/, loaders: ['babel-loader', 'ts-loader'], include: path.resolve('src') },
-      { test: /\.css$/, loader: "style-loader!css-loader" },
+      { test: /\.css$/, loader: "style-loader!css-loader", include: /flexboxgrid/ },
 
     ]
-  },
-  // plugins: [new HtmlWebpackPlugin({
-  //   title: 'ATG Alexa',
-  //   filename: 'index.html'
-  // })]
+  }
 };

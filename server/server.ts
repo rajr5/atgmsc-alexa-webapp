@@ -4,8 +4,13 @@ import { json, urlencoded } from 'body-parser';
 import { Response, Request, NextFunction, ErrorRequestHandler } from "express";
 import { logger } from './logger';
 import { setEnv } from './config';
+import * as uuid from 'uuid';
+import * as passport from 'passport';
+import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
 
-import { applicationRoutes } from './routes';
+
+import { applicationRoutes, loginRoutes } from './routes';
 
 const app: express.Application = express();
 
@@ -15,18 +20,20 @@ app.use(express.static(__dirname));
 
 app.disable('x-powered-by');
 
+app.use('/auth', loginRoutes);
 app.use('/api', applicationRoutes);
 
-// redirect unmatched
-
 logger.info('ENV', app.get('env'));
+
+app.use(passport.initialize());
+// app.use(passport.session());
 
 if(app.get('env') === 'production') {
   setEnv('production');
   // app.use(express.static(path.join(__dirname, '/../client'))); // TODO - serve this
   // Catch all routes and deliver index page
   app.use((req: Request, res: Response) => {
-    // res.sendFile(path.join(__dirname, '/../client/index.html')); // TODO - serve this in prod
+    res.sendFile(path.join(__dirname, '..', '..', 'index.html')); // TODO - serve this in prod
   });
 }
 
