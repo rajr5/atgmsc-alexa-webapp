@@ -1,5 +1,5 @@
 {
-  "name": "atg-alexa-react2",
+  "name": "atg-alexa-react",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server/bin/www.js",
@@ -52,7 +52,9 @@
     "superagent": "^3.5.2",
     "underscore": "^1.8.3",
     "uuid": "^3.0.1",
-    "winston": "^2.3.1"
+    "winston": "^2.3.1",
+    "typescript": "^2.3.2",
+    "webpack": "^2.5.1"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
@@ -72,8 +74,6 @@
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.17.0",
     "ts-loader": "^2.1.0",
-    "typescript": "^2.3.2",
-    "webpack": "^2.5.1",
     "webpack-dev-server": "^2.4.5"
   }
 }
